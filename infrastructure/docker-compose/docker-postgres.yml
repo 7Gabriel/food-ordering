@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=orders
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+      image: dpage/pgadmin4
+      container_name: pgadmin-console
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=joaogabriel@matutoprogramador.com
+        - PGADMIN_DEFAULT_PASSWORD=admin
+      ports:
+        - 5050:80
