@@ -7,6 +7,7 @@ import com.food.ordering.system.payment.service.domain.exception.PaymentApplicat
 import com.food.ordering.system.payment.service.domain.exception.PaymentNotFoundException;
 import com.food.ordering.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
 import com.food.ordering.system.payment.service.messaging.mapper.PaymentMessagingDataMapper;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;
 import org.springframework.dao.DataAccessException;
@@ -68,9 +69,11 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
                     throw new PaymentApplicationServiceException("Throwing DataAccessException in" +
                             " PaymentRequestKafkaListener: " + e.getMessage(), e);
                 }
+                Sentry.captureException(e);
             } catch (PaymentNotFoundException e) {
                 //NO-OP for PaymentNotFoundException
                 log.error("No payment found for order id: {}", paymentRequestAvroModel.getOrderId());
+                Sentry.captureException(e);
             }
         });
 

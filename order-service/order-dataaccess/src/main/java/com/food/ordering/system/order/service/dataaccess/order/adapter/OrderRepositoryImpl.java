@@ -6,6 +6,7 @@ import com.food.ordering.system.order.service.dataaccess.order.repository.OrderJ
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.valueobject.TrackingId;
+import io.sentry.spring.tracing.SentrySpan;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,17 +24,20 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    @SentrySpan
     public Order save(Order order) {
         return orderDataAccessMapper.orderEntityToOrder(orderJpaRepository
                 .save(orderDataAccessMapper.orderToOrderEntity(order)));
     }
 
     @Override
+    @SentrySpan
     public Optional<Order> findById(OrderId orderId) {
         return orderJpaRepository.findById(orderId.getValue()).map(orderDataAccessMapper::orderEntityToOrder);
     }
 
     @Override
+    @SentrySpan
     public Optional<Order> findByTrackingId(TrackingId trackingId) {
         return orderJpaRepository.findByTrackingId(trackingId.getValue())
                 .map(orderDataAccessMapper::orderEntityToOrder);

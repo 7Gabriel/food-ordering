@@ -5,6 +5,7 @@ import com.food.ordering.system.payment.service.dataaccess.creditentry.mapper.Cr
 import com.food.ordering.system.payment.service.dataaccess.creditentry.repository.CreditEntryJpaRepository;
 import com.food.ordering.system.payment.service.domain.entity.CreditEntry;
 import com.food.ordering.system.payment.service.domain.ports.output.repository.CreditEntryRepository;
+import io.sentry.spring.tracing.SentrySpan;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class CreditEntryRepositoryImpl implements CreditEntryRepository {
     }
 
     @Override
+    @SentrySpan
     public CreditEntry save(CreditEntry creditEntry) {
         return creditEntryDataAccessMapper
                 .creditEntryEntityToCreditEntry(creditEntryJpaRepository
@@ -29,6 +31,7 @@ public class CreditEntryRepositoryImpl implements CreditEntryRepository {
     }
 
     @Override
+    @SentrySpan
     public Optional<CreditEntry> findByCustomerId(CustomerId customerId) {
         return creditEntryJpaRepository
                 .findByCustomerId(customerId.getValue())

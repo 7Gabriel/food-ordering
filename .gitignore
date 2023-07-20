@@ -1,0 +1,46 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/infrastructure/docker-compose
+!**/common/common-domain/target/
+!**/order-service/order-messaging/target/
+!**/restaurant-service/restaurant-messaging/target/
+!**/payment-service/payment-messaging/target/
+!**/customer-service/customer-application/target/
+!**/customer-service/customer-dataaccess/target/
+!**/kafka/kafka-consumer/target/
+!**/order-service/order-application/target/
+!**/order-service/order-dataaccess/target/
+!**/payment-service/payment-container/target
+!**/payment-service/payment-dataaccess/target/
+!**/restaurant-service/restaurant-container/target/
+!**/restaurant-service/restaurant-dataaccess/target/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###git add
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/

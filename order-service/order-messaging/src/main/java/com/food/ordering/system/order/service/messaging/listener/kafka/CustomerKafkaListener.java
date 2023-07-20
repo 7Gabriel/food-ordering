@@ -4,6 +4,7 @@ import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.customer.CustomerMessageListener;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -27,6 +28,7 @@ public class CustomerKafkaListener implements KafkaConsumer<CustomerAvroModel> {
     }
 
     @Override
+    @SentrySpan
     @KafkaListener(id = "${kafka-consumer-config.customer-group-id}", topics = "${order-service.customer-topic-name}")
     public void receive(@Payload List<CustomerAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys,

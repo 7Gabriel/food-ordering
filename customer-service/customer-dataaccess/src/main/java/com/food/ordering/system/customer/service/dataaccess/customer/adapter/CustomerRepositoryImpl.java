@@ -4,6 +4,7 @@ import com.food.ordering.system.customer.service.dataaccess.customer.mapper.Cust
 import com.food.ordering.system.customer.service.dataaccess.customer.repository.CustomerJpaRepository;
 import com.food.ordering.system.customer.service.domain.entity.Customer;
 import com.food.ordering.system.customer.service.domain.ports.output.repository.CustomerRepository;
+import io.sentry.spring.tracing.SentrySpan;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +21,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
+    @SentrySpan
     public Customer createCustomer(Customer customer) {
         return customerDataAccessMapper.customerEntityToCustomer(
                 customerJpaRepository.save(customerDataAccessMapper.customerToCustomerEntity(customer)));

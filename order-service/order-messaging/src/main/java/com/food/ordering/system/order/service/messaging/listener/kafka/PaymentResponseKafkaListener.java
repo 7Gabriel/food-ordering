@@ -6,6 +6,8 @@ import com.food.ordering.system.kafka.order.avro.model.PaymentStatus;
 import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.payment.PaymentResponseMessageListener;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
+import io.sentry.Sentry;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -57,9 +59,12 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
                 //NO-OP for optimistic lock. This means another thread finished the work, do not throw error to prevent reading the data from kafka again!
                log.error("Caught optimistic locking exception in PaymentResponseKafkaListener for order id: {}",
                        paymentResponseAvroModel.getOrderId());
+                Sentry.captureException(e);
             } catch (OrderNotFoundException e) {
                 //NO-OP for OrderNotFoundException
                 log.error("No order found for order id: {}", paymentResponseAvroModel.getOrderId());
+                Sentry.captureException(e);
+
             }
         });
     }

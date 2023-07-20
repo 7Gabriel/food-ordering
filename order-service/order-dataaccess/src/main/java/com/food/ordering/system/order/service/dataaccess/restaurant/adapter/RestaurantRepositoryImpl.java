@@ -5,6 +5,7 @@ import com.food.ordering.system.dataaccess.restaurant.repository.RestaurantJpaRe
 import com.food.ordering.system.order.service.dataaccess.restaurant.mapper.RestaurantDataAccessMapper;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
+import io.sentry.spring.tracing.SentrySpan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     }
 
     @Override
+    @SentrySpan
     public Optional<Restaurant> findRestaurantInformation(Restaurant restaurant) {
         List<UUID> restaurantProducts =
                 restaurantDataAccessMapper.restaurantToRestaurantProducts(restaurant);

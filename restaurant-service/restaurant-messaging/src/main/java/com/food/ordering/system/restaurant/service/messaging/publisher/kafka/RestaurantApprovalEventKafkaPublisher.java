@@ -9,6 +9,7 @@ import com.food.ordering.system.restaurant.service.domain.outbox.model.OrderEven
 import com.food.ordering.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.ordering.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
 import com.food.ordering.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -69,6 +70,7 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
             log.error("Error while sending RestaurantApprovalResponseAvroModel message" +
                             " to kafka with order id: {} and saga id: {}, error: {}",
                     orderEventPayload.getOrderId(), sagaId, e.getMessage());
+            Sentry.captureException(e);
         }
     }
 

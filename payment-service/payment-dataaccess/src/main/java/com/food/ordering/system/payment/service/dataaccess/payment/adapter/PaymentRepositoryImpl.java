@@ -4,6 +4,7 @@ import com.food.ordering.system.payment.service.dataaccess.payment.mapper.Paymen
 import com.food.ordering.system.payment.service.dataaccess.payment.repository.PaymentJpaRepository;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
 import com.food.ordering.system.payment.service.domain.ports.output.repository.PaymentRepository;
+import io.sentry.spring.tracing.SentrySpan;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
+    @SentrySpan
     public Payment save(Payment payment) {
         return paymentDataAccessMapper
                 .paymentEntityToPayment(paymentJpaRepository
@@ -29,6 +31,7 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
+    @SentrySpan
     public Optional<Payment> findByOrderId(UUID orderId) {
         return paymentJpaRepository.findByOrderId(orderId)
                 .map(paymentDataAccessMapper::paymentEntityToPayment);

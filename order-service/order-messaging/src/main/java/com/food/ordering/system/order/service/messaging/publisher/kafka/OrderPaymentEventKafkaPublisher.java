@@ -9,6 +9,7 @@ import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderP
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.PaymentRequestMessagePublisher;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import com.food.ordering.system.outbox.OutboxStatus;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -66,6 +67,7 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
            log.error("Error while sending OrderPaymentEventPayload" +
                            " to kafka with order id: {} and saga id: {}, error: {}",
                    orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
+            Sentry.captureException(e);
         }
 
 

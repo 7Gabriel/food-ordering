@@ -38,3 +38,9 @@ kafka-producer-config:
   linger-ms: 5
   request-timeout-ms: 60000
   retry-count: 5
+
+sentry:
+  dsn: ${SENTRY}
+  traces-sample-rate: 1.0
+  logging:
+    enabled: true

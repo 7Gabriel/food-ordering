@@ -10,6 +10,8 @@ import com.food.ordering.system.order.service.domain.outbox.model.approval.Order
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.restaurantapproval.RestaurantApprovalRequestMessagePublisher;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import com.food.ordering.system.outbox.OutboxStatus;
+import io.sentry.Sentry;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +38,7 @@ public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalReque
 
 
     @Override
+    @SentrySpan
     public void publish(OrderApprovalOutboxMessage orderApprovalOutboxMessage,
                         BiConsumer<OrderApprovalOutboxMessage, OutboxStatus> outboxCallback) {
         OrderApprovalEventPayload orderApprovalEventPayload =
@@ -69,6 +72,7 @@ public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalReque
         } catch (Exception e) {
             log.error("Error while sending OrderApprovalEventPayload to kafka for order id: {} and saga id: {}," +
                     " error: {}", orderApprovalEventPayload.getOrderId(), sagaId, e.getMessage());
+            Sentry.captureException(e);
         }
 
 

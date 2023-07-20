@@ -5,6 +5,7 @@ import com.food.ordering.system.order.service.domain.dto.create.CreateOrderRespo
 import com.food.ordering.system.order.service.domain.dto.track.TrackOrderQuery;
 import com.food.ordering.system.order.service.domain.dto.track.TrackOrderResponse;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -25,11 +26,13 @@ class OrderApplicationServiceImpl implements OrderApplicationService {
     }
 
     @Override
+    @SentrySpan
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         return orderCreateCommandHandler.createOrder(createOrderCommand);
     }
 
     @Override
+    @SentrySpan
     public TrackOrderResponse trackOrder(TrackOrderQuery trackOrderQuery) {
         return orderTrackCommandHandler.trackOrder(trackOrderQuery);
     }

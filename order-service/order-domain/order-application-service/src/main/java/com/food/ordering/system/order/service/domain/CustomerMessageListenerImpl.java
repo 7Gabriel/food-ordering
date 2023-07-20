@@ -6,6 +6,7 @@ import com.food.ordering.system.order.service.domain.exception.OrderDomainExcept
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.customer.CustomerMessageListener;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
+import io.sentry.spring.tracing.SentrySpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class CustomerMessageListenerImpl implements CustomerMessageListener {
     }
 
     @Override
+    @SentrySpan
     public void customerCreated(CustomerModel customerModel) {
         Customer customer = customerRepository.save(orderDataMapper.customerModelToCustomer(customerModel));
         if (customer == null) {
