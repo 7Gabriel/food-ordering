@@ -2,6 +2,7 @@ package com.food.ordering.system.kafka.producer.service.impl;
 
 import com.food.ordering.system.kafka.producer.exception.KafkaProducerException;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.kafka.KafkaException;
@@ -33,6 +34,7 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
         } catch (KafkaException e) {
             log.error("Error on kafka producer with key: {}, message: {} and exception: {}", key, message,
                     e.getMessage());
+            Sentry.captureException(e);
             throw new KafkaProducerException("Error on kafka producer with key: " + key + " and message: " + message);
         }
     }
