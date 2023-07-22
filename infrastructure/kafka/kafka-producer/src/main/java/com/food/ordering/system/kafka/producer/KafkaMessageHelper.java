@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.outbox.OutboxStatus;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.support.SendResult;
@@ -27,6 +28,7 @@ public class KafkaMessageHelper {
             return objectMapper.readValue(payload, outputType);
         } catch (JsonProcessingException e) {
             log.error("Could not read {} object!", outputType.getName(), e);
+            Sentry.captureException(e);
             throw new OrderDomainException("Could not read " + outputType.getName() + " object!", e);
         }
     }
